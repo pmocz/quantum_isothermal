@@ -138,37 +138,47 @@ Next, we take the real part:
 \end{equation}
 
 \begin{equation}
--\frac{\partial \theta}{\partial t} = \frac{\hbar}{2m} (\nabla \theta)^2 + \mathbf{A} \cdot R \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho \right)
+-\frac{\partial \theta}{\partial t} = \frac{\hbar}{2m} |\nabla \theta|^2  + \mathbf{A} \cdot \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho \right)
 \end{equation}
 
 \begin{equation}
--\frac{\partial \nabla \theta}{\partial t} =\nabla \left( \frac{\hbar}{2m} (\nabla \theta)^2 + \mathbf{A} \cdot R \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho \right) \right)
+-\frac{\partial \nabla \theta}{\partial t} =\nabla \left( \frac{\hbar}{2m} |\nabla \theta|^2  + \mathbf{A} \cdot \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho \right) \right)
 \end{equation}
 
 \begin{equation}
-\frac{\partial \nabla \phi}{\partial t} =\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + \left(A^2 + \ln \rho \right) \right)
+\frac{\partial \nabla \phi}{\partial t} =\nabla \left( \frac{1}{2} (|\nabla \phi|^2  - \mathbf{A} \cdot \nabla \phi + \left(\frac{1}{2}A^2 + \ln \rho \right) \right)
 \end{equation}
 
 
 \begin{equation}
-\frac{\partial \nabla \phi}{\partial t} =\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + A^2 \right) + \frac{\nabla \rho}{\rho}
+\frac{\partial \nabla \phi}{\partial t} =\nabla \left( \frac{1}{2} (|\nabla \phi|^2  - \mathbf{A} \cdot \nabla \phi + \frac{1}{2}A^2 \right) + \frac{\nabla \rho}{\rho}
 \end{equation}
 
 \begin{equation}
--\frac{\partial \nabla \phi}{\partial t} + \frac{\partial\mathbf{A}}{\partial t} = -\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{A})
+-\frac{\partial \nabla \phi}{\partial t} + \frac{\partial\mathbf{A}}{\partial t} = -\nabla \left( \frac{1}{2} (|\nabla \phi|^2 - \mathbf{A} \cdot \nabla \phi + \frac{1}{2}A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{A})
 \end{equation}
 
 \begin{equation}
-\frac{\partial\mathbf{v}}{\partial t} = -\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{A})
+\frac{\partial\mathbf{v}}{\partial t} = -\nabla \left( \frac{1}{2} |\nabla \phi|^2 - \mathbf{A} \cdot \nabla \phi + \frac{1}{2}A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{A})
+\end{equation}
+
+\begin{equation}
+\frac{\partial\mathbf{v}}{\partial t} = -\nabla \left( \frac{1}{2} |\nabla \phi|^2 - \mathbf{A} \cdot \nabla \phi + \frac{1}{2}A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{v})
+\end{equation}
+
+\begin{equation}
+\frac{\partial\mathbf{v}}{\partial t} = -\nabla \left( \frac{1}{2} |\nabla \phi|^2 - \mathbf{A} \cdot \nabla \phi + \frac{1}{2}A^2 \right) - \frac{\nabla \rho}{\rho} + \frac{1}{2} \nabla (v^2) - (\mathbf{v}\cdot\nabla)\mathbf{v}
+\end{equation}
+
+\begin{equation}
+\frac{\partial\mathbf{v}}{\partial t} = -\nabla \left( \frac{1}{2} |\nabla \phi|^2 - \mathbf{A} \cdot \nabla \phi + \frac{1}{2}A^2 -\frac{1}{2} v^2 \right) - \frac{\nabla \rho}{\rho}  - (\mathbf{v}\cdot\nabla)\mathbf{v}
+\end{equation}
+
+\begin{equation}
+\frac{\partial\mathbf{v}}{\partial t} = - \frac{\nabla \rho}{\rho}  - (\mathbf{v}\cdot\nabla)\mathbf{v}
 \end{equation}
 
 
-XXXXX
-
-
-
-
-XXX check math above
 
 XXX simulate correspondence
 

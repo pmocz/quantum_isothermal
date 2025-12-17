@@ -1,0 +1,177 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+
+\title{Fluid to Quantum Formulation Notes}
+\author{Philip Mocz}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\section{Compressible Isothermal Fluid Equations}
+
+For simplicity, we consider the compressible isothermal fluid equations (with sound speed $c_s=1$):
+
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0
+\end{equation}
+\begin{equation}
+\frac{\partial (\rho \mathbf{v})}{\partial t} + \nabla \cdot (\rho \mathbf{v} \otimes \mathbf{v}) + \nabla \rho = 0
+\end{equation}
+
+where $\rho$ is the fluid density, $\mathbf{v}$ is the fluid velocity.
+
+Note, we can write the momentum equation as:
+\begin{equation}
+\frac{\partial \mathbf{v}}{\partial t} + \mathbf{v}\cdot\nabla\mathbf{v} + \frac{\nabla\rho}{\rho} = 0
+\end{equation}
+
+\section{Madelung Transformation}
+
+We can transform these fluid equations into a quantum-like formulation using the Madelung transformation.
+
+Decompose (Helmholtz) the fluid velocity as:
+
+\begin{equation}
+\mathbf{v} =-\nabla \phi + \mathbf{A}
+\end{equation}
+where $\mathbf{A} \equiv \nabla\times\mathbf{Z}$ (note: $\nabla\cdot\mathbf{A} = 0$). Define $\mathbf{B} \equiv \nabla\times\mathbf{A}$.
+
+Note that:
+\begin{equation}
+\nabla \cdot \mathbf{A} = 0
+\end{equation}
+\begin{equation}
+\nabla \cdot \mathbf{v} = -\nabla^2 \phi
+\end{equation}
+\begin{equation}
+\nabla \times \mathbf{v} = \nabla \times \mathbf{A} = \nabla (\nabla \cdot \mathbf{Z} ) - \nabla^2 \mathbf{Z}
+\end{equation}
+
+Write the Schr\"odinger-like equation:
+
+\begin{equation}
+  i\hbar \frac{\partial\psi}{\partial t}  = \left( \frac{1}{2m}  (-i\hbar\nabla + m\mathbf{A})^2 + m\ln\rho + \frac{\hbar^2}{2m} \frac{\nabla^2\sqrt{\rho}}{\sqrt{\rho}}\right) \psi
+\end{equation}
+\begin{equation}
+\frac{\partial \mathbf{A}}{\partial t} = \mathbf{v} \times \mathbf{B}
+\end{equation}
+
+where:
+
+\begin{equation}
+\psi = \sqrt{\rho} \exp\left(\frac{-i m \phi}{\hbar}\right)
+\end{equation}
+
+i.e.,
+\begin{equation}
+  i\frac{\partial\psi}{\partial t}  = \left( -\frac{\hbar}{2m}\nabla^2 -\frac{1}{2} i (2\mathbf{A}\cdot\nabla + \nabla \cdot \mathbf{A}) + \frac{m}{2\hbar}A^2 + \frac{m}{\hbar}\ln\rho + \frac{\hbar}{2m} \frac{\nabla^2\sqrt{\rho}}{\sqrt{\rho}}\right) \psi
+\end{equation}
+
+
+We can write:
+\begin{equation}
+  \psi \equiv R e^{i\theta}
+\end{equation}
+where $R = \sqrt{\rho}$ and $\theta = -\frac{m}{\hbar}\phi$.
+So:
+\begin{equation}
+\frac{\partial \psi}{\partial t} = e^{i\theta} \left( \frac{\partial R}{\partial t} + i R \frac{\partial \theta}{\partial t} \right)
+\end{equation}
+\begin{equation}
+\nabla \psi = e^{i\theta} \left( \nabla R + i R \nabla \theta \right)
+\end{equation}
+\begin{equation}
+\nabla^2 \psi = e^{i\theta} \left( \nabla^2 R + 2 i \nabla R \cdot \nabla \theta + i R \nabla^2 \theta - R |\nabla \theta|^2 \right)
+\end{equation}
+\begin{equation}
+\mathbf{A} \cdot \nabla \psi = e^{i\theta} \left( \mathbf{A} \cdot \nabla R + i R \mathbf{A} \cdot \nabla \theta \right)
+\end{equation}
+
+Thus:
+
+\begin{eqnarray}
+i \left( \frac{\partial R}{\partial t} + i R \frac{\partial \theta}{\partial t} \right)
+=
+&-&\frac{\hbar}{2m} \left( \nabla^2 R + 2 i \nabla R \cdot \nabla \theta + i R \nabla^2 \theta - R |\nabla \theta|^2 \right) \\
+&-&\frac{1}{2} i \left( 2\mathbf{A} \cdot \nabla R + i 2R \mathbf{A} \cdot \nabla \theta + (\nabla \cdot \mathbf{A}) R \right) \\
+&+&\left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho + \frac{\hbar}{2m} \frac{\nabla^2 R}{R} \right) R
+\end{eqnarray}
+
+The imaginary part of the above equation yields:
+\begin{equation}
+\frac{\partial R}{\partial t} = -\frac{\hbar}{m} \nabla R \cdot \nabla \theta - \frac{\hbar}{2m} R \nabla^2 \theta - \mathbf{A} \cdot \nabla R - \frac{1}{2} (\nabla \cdot \mathbf{A}) R
+\end{equation}
+
+Note: $\frac{\partial \rho}{\partial t} = 2 R \frac{\partial R}{\partial t}$
+and $\nabla\rho = 2 R \nabla R$
+and $\nabla \theta = -\frac{m}{\hbar} \nabla \phi$.
+
+So:
+\begin{equation}
+\frac{\partial \rho}{\partial t} = -\frac{2\hbar}{m} R \nabla R \cdot \nabla \theta - \frac{\hbar}{m} R^2 \nabla^2 \theta - \mathbf{A} \cdot 2R \nabla R - (\nabla \cdot \mathbf{A}) R^2
+\end{equation}
+\begin{equation}
+\frac{\partial \rho}{\partial t} =  \nabla \rho \cdot \nabla \phi + \rho \nabla^2 \phi - \mathbf{A} \cdot \nabla \rho - (\nabla \cdot \mathbf{A}) \rho
+\end{equation}
+\begin{equation}
+\frac{\partial \rho}{\partial t} +\rho (-\nabla^2\phi + \nabla\cdot\mathbf{A}) + \nabla\rho\cdot(-\nabla\phi+\mathbf{A})= 0
+\end{equation}
+i.e.,
+\begin{equation}
+\frac{\partial \rho}{\partial t} +\rho (\nabla\cdot\mathbf{v}) + \nabla\rho\cdot(\mathbf{v})= 0
+\end{equation}
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0
+\end{equation}
+i.e., we recover the fluid continuity equation!
+
+
+XXXXXXX
+
+Next, we take the real part:
+\begin{equation}
+-R \frac{\partial \theta}{\partial t} = -\frac{\hbar}{2m} \nabla^2 R + \frac{\hbar}{2m} R |\nabla \theta|^2 + \mathbf{A} \cdot R \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho + \frac{\hbar}{2m} \frac{\nabla^2 R}{R} \right) R
+\end{equation}
+
+\begin{equation}
+-\frac{\partial \theta}{\partial t} = \frac{\hbar}{2m} (\nabla \theta)^2 + \mathbf{A} \cdot R \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho \right)
+\end{equation}
+
+\begin{equation}
+-\frac{\partial \nabla \theta}{\partial t} =\nabla \left( \frac{\hbar}{2m} (\nabla \theta)^2 + \mathbf{A} \cdot R \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho \right) \right)
+\end{equation}
+
+\begin{equation}
+\frac{\partial \nabla \phi}{\partial t} =\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + \left(A^2 + \ln \rho \right) \right)
+\end{equation}
+
+
+\begin{equation}
+\frac{\partial \nabla \phi}{\partial t} =\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + A^2 \right) + \frac{\nabla \rho}{\rho}
+\end{equation}
+
+\begin{equation}
+-\frac{\partial \nabla \phi}{\partial t} + \frac{\partial\mathbf{A}}{\partial t} = -\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{A})
+\end{equation}
+
+\begin{equation}
+\frac{\partial\mathbf{v}}{\partial t} = -\nabla \left( \frac{1}{2} (\nabla \phi)^2 - \mathbf{A} \cdot R \nabla \theta + A^2 \right) - \frac{\nabla \rho}{\rho} + \mathbf{v} \times (\nabla \times \mathbf{A})
+\end{equation}
+
+
+XXXXX
+
+
+
+
+XXX check math above
+
+XXX simulate correspondence
+
+XXX Can I made a dark matter model with A in it? How does it tie back to relativistic equations?
+
+\end{document}

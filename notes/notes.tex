@@ -13,7 +13,7 @@
 
 \section{Compressible Isothermal Fluid Equations}
 
-For simplicity, we consider the compressible isothermal fluid equations (with sound speed $c_s=1$):
+For simplicity, we consider the compressible isothermal fluid equations (with sound speed $c_s=1$; $P=\rho c_s^2 = \rho$):
 
 \begin{equation}
 \frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \mathbf{v}) = 0
@@ -130,8 +130,6 @@ i.e.,
 i.e., we recover the fluid continuity equation!
 
 
-XXXXXXX
-
 Next, we take the real part:
 \begin{equation}
 -R \frac{\partial \theta}{\partial t} = -\frac{\hbar}{2m} \nabla^2 R + \frac{\hbar}{2m} R |\nabla \theta|^2 + \mathbf{A} \cdot R \nabla \theta + \left(\frac{m}{2\hbar} A^2 + \frac{m}{\hbar} \ln \rho + \frac{\hbar}{2m} \frac{\nabla^2 R}{R} \right) R
@@ -178,6 +176,7 @@ Next, we take the real part:
 \frac{\partial\mathbf{v}}{\partial t} = - \frac{\nabla \rho}{\rho}  - (\mathbf{v}\cdot\nabla)\mathbf{v}
 \end{equation}
 
+which is the momentum equation of the fluid!
 
 
 XXX simulate correspondence

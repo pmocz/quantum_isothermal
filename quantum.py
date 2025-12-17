@@ -6,4 +6,3 @@ import jax.numpy as jnp
 # Philip Mocz (2025)
 
 # Simulate the compressible isothermal equations and a quantum Schrodinger-type analog equation.
-

@@ -227,7 +227,7 @@ def plot_solution(state):
     """
     plt.figure(figsize=(6, 4), dpi=240)
 
-    plt.imshow((jnp.abs(state["psi"])**2).T, cmap="inferno")
+    plt.imshow((jnp.abs(state["psi"]) ** 2).T, cmap="inferno")
     plt.clim(0.95, 1.1)
     plt.gca().get_xaxis().set_visible(False)
     plt.gca().get_yaxis().set_visible(False)

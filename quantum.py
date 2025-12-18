@@ -45,7 +45,7 @@ ky = jnp.fft.ifftshift(ky)
 k_sq = kx**2 + ky**2
 
 
-def div(fx, fy):
+def div_real(fx, fy):
     """
     Compute the divergence of a periodic vector field f = (f_x, f_y)
     spectral method
@@ -59,7 +59,7 @@ def div(fx, fy):
     return div_f
 
 
-def curl(fx, fy):
+def curl_real(fx, fy):
     """
     Compute the curl of a periodic vector field f = (f_x, f_y)
     spectral method
@@ -73,7 +73,7 @@ def curl(fx, fy):
     return curl_f
 
 
-def grad(f):
+def grad_real(f):
     """
     Compute the gradient of a periodic scalar field f
     spectral method
@@ -85,6 +85,21 @@ def grad(f):
 
     grad_x = jnp.fft.ifftn(grad_x_hat).real
     grad_y = jnp.fft.ifftn(grad_y_hat).real
+    return grad_x, grad_y
+
+
+def grad(f):
+    """
+    Compute the gradient of a periodic scalar field f
+    spectral method
+    """
+    f_hat = jnp.fft.fftn(f)
+
+    grad_x_hat = 1j * kx * f_hat
+    grad_y_hat = 1j * ky * f_hat
+
+    grad_x = jnp.fft.ifftn(grad_x_hat)
+    grad_y = jnp.fft.ifftn(grad_y_hat)
     return grad_x, grad_y
 
 
@@ -103,15 +118,15 @@ def run_simulation(state):
 
         # also include quantum vector potential term
         # i d(psi)/dt = (hbar/(2m))*(nabla^2 sqrt(rho)/sqrt(rho)) psi
-        # sx, sy = grad(jnp.sqrt(rho))
-        # s = div(sx, sy)
+        # sx, sy = grad_real(jnp.sqrt(rho))
+        # s = div_real(sx, sy)
         # quantum_potential = -0.5 / m_per_hbar * (s / (jnp.sqrt(rho) + tiny))
         # psi = psi * jnp.exp(-1j * dt * quantum_potential)
 
         # add A terms:
         # i d(psi)/dt = (i/2)*(2 A.nabla + nabla.A) psi
         grad_psi_x, grad_psi_y = grad(psi)
-        div_A = div(Ax, Ay)
+        div_A = div_real(Ax, Ay)
         # psi = psi * jnp.exp(
         #    -dt * (Ax * grad_psi_x + Ay * grad_psi_y + 0.5 * div_A)
         # )
@@ -121,7 +136,7 @@ def run_simulation(state):
         # do rk2 instead
         # def L_adv(psi, Ax, Ay):
         #    gx, gy = grad(psi)
-        #    return -(Ax*gx + Ay*gy + 0.5*div(Ax, Ay)*psi)
+        #    return -(Ax*gx + Ay*gy + 0.5*div_real(Ax, Ay)*psi)
 
         # k1 = L_adv(psi, Ax, Ay)
         # psi1 = psi + 0.5*dt*k1
@@ -147,7 +162,7 @@ def run_simulation(state):
 
         # theta = jnp.angle(psi)  # XXX
         # phi = -theta / m_per_hbar
-        # grad_phi_x, grad_phi_y = grad(phi)
+        # grad_phi_x, grad_phi_y = grad_real(phi)
 
         gx, gy = grad(psi)
         inv = 1.0 / (psi + 1e-12)
@@ -159,7 +174,7 @@ def run_simulation(state):
         vx = -grad_phi_x + Ax
         vy = -grad_phi_y + Ay
 
-        curl_A = curl(Ax, Ay)
+        curl_A = curl_real(Ax, Ay)
         Ax = Ax + dt * (vy * curl_A)
         Ay = Ay - dt * (vx * curl_A)
 
@@ -187,14 +202,14 @@ def set_up_state():
     vy = -0.2 * jnp.cos(4.0 * jnp.pi * X) * jnp.sin(2.0 * jnp.pi * Y)
 
     # solve div(v) = -nabla^2 phi for phi
-    div_v = div(vx, vy)
+    div_v = div_real(vx, vy)
     div_v_hat = jnp.fft.fftn(div_v)
     phi_hat = -div_v_hat / (k_sq + (k_sq == 0))
     phi = jnp.fft.ifftn(phi_hat).real
     theta = -m_per_hbar * phi
 
     # v = -grad(phi) + A
-    grad_phi_x, grad_phi_y = grad(phi)
+    grad_phi_x, grad_phi_y = grad_real(phi)
     Ax = vx + grad_phi_x
     Ay = vy + grad_phi_y
 

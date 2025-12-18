@@ -1,6 +1,5 @@
 import jax
 import jax.numpy as jnp
-import time
 import matplotlib.pyplot as plt
 
 

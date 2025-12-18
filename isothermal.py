@@ -1,4 +1,5 @@
 import jax
+import argparse
 import jax.numpy as jnp
 import matplotlib.pyplot as plt
 
@@ -8,7 +9,23 @@ Finite Volume Solver for 2D Isothermal Euler Equations
 Philip Mocz (2025) @PMocz
 """
 
-n = 128  # resolution
+# Simulation parameters
+parser = argparse.ArgumentParser(
+    description="Finite Volume Solver for 2D Isothermal Euler Equations"
+)
+parser.add_argument("--n", type=int, default=128, help="resolution")
+parser.add_argument("--t", type=float, default=3.0, help="stopping time")
+parser.add_argument("--nt", type=int, default=1000, help="number of time steps")
+args = parser.parse_args()
+
+n = args.n
+t_stop = args.t
+nt = args.nt
+
+dt = t_stop / nt
+box_size = 1.0
+dx = box_size / n
+
 
 # set double precision
 # jax.config.update("jax_enable_x64", True)
@@ -111,8 +128,6 @@ def update_sim(i, state):
     rho = state["rho"]
     vx = state["vx"]
     vy = state["vy"]
-    dx = state["dx"]
-    dt = state["dt"]
 
     # calculate gradients
     rho_dx, rho_dy = get_gradient(rho, dx)
@@ -153,8 +168,6 @@ def update_sim(i, state):
     state["rho"] = rho
     state["vx"] = vx
     state["vy"] = vy
-    state["dx"] = dx
-    state["dt"] = dt
 
     return state
 
@@ -163,7 +176,6 @@ def run_simulation(state):
     """
     Run the finite volume simulation (Main Loop)
     """
-    nt = 1000
     state = jax.lax.fori_loop(0, nt, update_sim, init_val=state)
 
     return state
@@ -173,12 +185,8 @@ def set_up_state():
     """
     Set up the initial state for the simulation
     """
-    # Simulation parameters
-    dt = 0.003
 
     # Mesh
-    box_size = 1.0
-    dx = box_size / n
     x_lin = jnp.linspace(0.5 * dx, box_size - 0.5 * dx, n)
     X, Y = jnp.meshgrid(x_lin, x_lin, indexing="ij")
 
@@ -191,8 +199,6 @@ def set_up_state():
     state["rho"] = rho
     state["vx"] = vx
     state["vy"] = vy
-    state["dx"] = dx
-    state["dt"] = dt
 
     return state
 
@@ -210,7 +216,12 @@ def plot_solution(state):
     plt.gca().invert_yaxis()
     plt.gca().set_aspect("equal")
     plt.tight_layout()
-    plt.savefig("output_isothermal.png", dpi=240)
+    plt.savefig(
+        f"output_isothermal_t{t_stop}_n{n}_nt{nt}.png",
+        bbox_inches="tight",
+        pad_inches=0,
+        dpi=240,
+    )
     plt.show()
 
 

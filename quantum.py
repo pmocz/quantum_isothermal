@@ -112,11 +112,21 @@ def run_simulation(state):
         # i d(psi)/dt = (i/2)*(2 A.nabla + nabla.A) psi
         grad_psi_x, grad_psi_y = grad(psi)
         div_A = div(Ax, Ay)
-        psi = psi * jnp.exp(
-            -dt * (Ax * grad_psi_x + Ay * grad_psi_y + 0.5 * div_A)
-        )  # XXX
+        # psi = psi * jnp.exp(
+        #    -dt * (Ax * grad_psi_x + Ay * grad_psi_y + 0.5 * div_A)
+        # )
         # do forward euler instead:
-        # psi = psi + dt * (Ax * grad_psi_x + Ay * grad_psi_y + 0.5 * div_A) * 1j * psi
+        psi = psi - dt * (Ax * grad_psi_x + Ay * grad_psi_y + 0.5 * div_A * psi)
+
+        # do rk2 instead
+        # def L_adv(psi, Ax, Ay):
+        #    gx, gy = grad(psi)
+        #    return -(Ax*gx + Ay*gy + 0.5*div(Ax, Ay)*psi)
+
+        # k1 = L_adv(psi, Ax, Ay)
+        # psi1 = psi + 0.5*dt*k1
+        # k2 = L_adv(psi1, Ax, Ay)
+        # psi = psi + dt*k2
 
         state["psi"] = psi
         return state
@@ -134,9 +144,18 @@ def run_simulation(state):
         rho = jnp.abs(psi) ** 2
         # v = -grad(phi) + A
         # psi = R * exp(i theta) = sqrt(rho) * exp(-i * m_per_hbar * phi)
-        theta = jnp.angle(psi)  # XXX
-        phi = -theta / m_per_hbar
-        grad_phi_x, grad_phi_y = grad(phi)
+
+        # theta = jnp.angle(psi)  # XXX
+        # phi = -theta / m_per_hbar
+        # grad_phi_x, grad_phi_y = grad(phi)
+
+        gx, gy = grad(psi)
+        inv = 1.0 / (psi + 1e-12)
+        grad_theta_x = jnp.imag(gx * inv)
+        grad_theta_y = jnp.imag(gy * inv)
+
+        grad_phi_x = -(1.0 / m_per_hbar) * grad_theta_x
+        grad_phi_y = -(1.0 / m_per_hbar) * grad_theta_y
         vx = -grad_phi_x + Ax
         vy = -grad_phi_y + Ay
 
@@ -169,8 +188,9 @@ def set_up_state():
 
     # solve div(v) = -nabla^2 phi for phi
     div_v = div(vx, vy)
-    phi_k = -1j * div_v / (k_sq + (k_sq == 0))
-    phi = jnp.fft.ifftn(phi_k).real
+    div_v_hat = jnp.fft.fftn(div_v)
+    phi_hat = -div_v_hat / (k_sq + (k_sq == 0))
+    phi = jnp.fft.ifftn(phi_hat).real
     theta = -m_per_hbar * phi
 
     # v = -grad(phi) + A

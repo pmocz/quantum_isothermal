@@ -14,8 +14,8 @@ parser = argparse.ArgumentParser(
     description="Finite Volume Solver for 2D Isothermal Euler Equations"
 )
 parser.add_argument("--n", type=int, default=128, help="resolution")
-parser.add_argument("--t", type=float, default=3.0, help="stopping time")
-parser.add_argument("--nt", type=int, default=1000, help="number of time steps")
+parser.add_argument("--nt", type=int, default=100, help="number of time steps")
+parser.add_argument("--t", type=float, default=0.1, help="stopping time")
 args = parser.parse_args()
 
 n = args.n

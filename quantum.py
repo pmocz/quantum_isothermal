@@ -18,10 +18,8 @@ import matplotlib.pyplot as plt
 parser = argparse.ArgumentParser(description="Quantum isothermal fluid simulation")
 parser.add_argument("--n", type=int, default=128, help="resolution")
 parser.add_argument("--nt", type=int, default=100, help="number of time steps")
-parser.add_argument("--t", type=float, default=0.1, help="stop time")
-parser.add_argument(
-    "--m", type=float, default=100.0, help="mass parameter in quantum analogy"
-)
+parser.add_argument("--t", type=float, default=0.1, help="stopping time")
+parser.add_argument("--m", type=float, default=100.0, help="m/hbar")
 args = parser.parse_args()
 
 n = args.n

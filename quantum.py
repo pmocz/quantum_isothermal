@@ -101,6 +101,13 @@ def run_simulation(state):
             -1j * dt * m_per_hbar * ((Ax**2 + Ay**2) / (2.0) + jnp.log(rho + tiny))
         )
 
+        # also include quantum vector potential term
+        # i d(psi)/dt = (hbar/(2m))*(nabla^2 sqrt(rho)/sqrt(rho)) psi
+        # sx, sy = grad(jnp.sqrt(rho))
+        # s = div(sx, sy)
+        # quantum_potential = -0.5 / m_per_hbar * (s / (jnp.sqrt(rho) + tiny))
+        # psi = psi * jnp.exp(-1j * dt * quantum_potential)
+
         # add A terms:
         # i d(psi)/dt = (i/2)*(2 A.nabla + nabla.A) psi
         grad_psi_x, grad_psi_y = grad(psi)
